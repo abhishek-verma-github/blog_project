@@ -1,0 +1,66 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+    <article class="media content-section">
+    <img class = "rounded-circle article-img" src="{{ object.author.profile.image.url }}">
+    <div class="media-body">
+        <div class="article-metadata">
+        <a class="mr-2" href="#">{{ object.author }}</a>
+        <small class="text-muted">{{ object.date_posted|date:"F d, Y" }}</small>
+            {% if object.author == user %}
+                <a class = "bt btn-secondary btn-sm mt-1 mb-1" href="{% url 'post-update' object.id %}">Update</a>
+                <a class = "bt btn-danger btn-sm mt-1 mb-1" href="{% url 'post-delete' object.id %}">Delete</a>
+
+            {% endif %}
+        </div>
+        <h2 class = " article-title ">{{ object.title }}</h2>
+        <p class="article-content">{{ object.content }}</p>
+    </div>
+    </article>
+
+    <div class="card">
+        <div class="card-body">
+            <div style="margin-bottom: 7px; font-style: oblique;">  
+            Comments ({{ comments.count }})
+            </div>
+          <!-- comments -->
+          {% for comment in comments %}
+          <div class="comments" style="padding: 5px;">
+            <p class="font-weight-bold">
+              {{ comment.user }}
+              <span class=" text-muted font-weight-normal">
+                {{ comment.created_on }}
+              </span>
+            </p>
+            {{ comment.comment | linebreaks }}
+          </div>
+          {% endfor %}
+        </div>
+
+            
+        
+      </div>
+
+      <div class="card" style="margin-top: 5em;">
+        <div class="card-body">
+          {% if new_comment %}
+          <div class="alert alert-success" role="alert">
+            comment posted
+          </div>
+          {% else %}
+          <h3>Leave a comment</h3>
+          <form method="post" style="margin-top: 1.3em;">
+            {{ comment_form.as_p }}
+            {% csrf_token %}
+            <button type="submit" class="btn btn-primary  btn-lg">add comment</button>
+          </form>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+{% endblock content %}
+
