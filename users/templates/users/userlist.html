@@ -1,0 +1,87 @@
+{% extends 'blog/base.html' %} 
+{% block content %}
+
+<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" >
+
+<div class="container bootstrap snippet">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="main-box no-header clearfix">
+                <div class="main-box-body clearfix">
+                    <div class="table-responsive">
+                        <table class="table user-list">
+                            <thead>
+                                <tr>
+                                <th><span>User</span></th>
+                                <th><span>Created</span></th>
+                                <th class="text-center"><span>Status</span></th>
+                                <th><span>Email</span></th>
+                                <th>&nbsp;</th>
+                                </tr>
+                            </thead>
+                            {% for user in users %}
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img src="{{ user.profile.image.url }}" alt="" width = 50px>
+                                        <a href="#" class="user-link">{{ user.username }}</a>
+                                        <span class="user-subhead">Member</span>
+                                        <!-- <div class = 'form-group'>
+                                            <a class = 'btn btn-outline-danger' href="{% url 'deleteuser' user.id %}">delete</a>
+                                        </div> -->
+                                        <form method="post" action="{% url 'deleteuser' user.id %}">
+                                            {% csrf_token %}
+                                            <!-- {% csrf_token %}
+                                            {# A more "HTML" way of creating the login form#}
+                                            <label for="username">Username:</label>
+                                            <input type="hidden" name="pk" >{{ user.id }}</label> -->
+
+                                            <input type="submit" name="delete" value="Delete">
+                                          </form>
+
+                                    </td>
+                                    <td>{{ user.created_on }}</td>
+                                    <td class="text-center">
+                                        <span class="label label-default">{{ user.is_active }}</span>
+                                    </td>
+                                    <td>
+                                        <a href="#">{{ user.email }}</a>
+                                    </td>
+
+                                    <td style="width: 20%;">
+                                        <a href="#" class="table-link">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-search-plus fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="table-link">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-pencil fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </a>
+                                        <a href="#" class="table-link danger">
+                                            <span class="fa-stack">
+                                                <i class="fa fa-square fa-stack-2x"></i>
+                                                <i class="fa fa-trash-o fa-stack-1x fa-inverse"></i>
+                                            </span>
+                                        </a>
+                                    </td>
+                                    
+                                </tr>
+
+                                
+
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

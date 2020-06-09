@@ -19,6 +19,8 @@ from rest_framework import generics
 from rest_framework.renderers import TemplateHTMLRenderer
 import requests
 
+import logging
+
 
 # @login_required()
 def home(request):
@@ -36,7 +38,7 @@ def home(request):
     return render(request, 'blog/home.html', context)
 
 
-# class Home(generics.RetrieveAPIView):#apiHome
+# class Home(generics.RetrieveAPIView):  # apiHome
 #     posts = Post.objects.all()
 #     renderer_class = [TemplateHTMLRenderer]
 #     serializer = PostSerializer(posts, many=True)
@@ -121,6 +123,9 @@ def PostDetailView(request, pk):
     # Comment posted
 
     if request.method == 'POST':
+        logging.log(
+            logging.INFO, 'request method: POST invoked; view:PostDetailView')
+        # logging.info('request method: POST invoked; view:PostDetailView')<--directly invoke log level method
         comment_form = CommentForm(data=request.POST)
         if comment_form.is_valid():
 
@@ -131,6 +136,7 @@ def PostDetailView(request, pk):
             new_comment.user = request.user
             # Save the comment to the database
             new_comment.save()
+            logging.info(f'new_comment:{new_comment}, saved!')
     else:
         comment_form = CommentForm()
 
@@ -159,6 +165,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         if self.request.user == post.author:
             return True
         else:
+            logging.warning(f'{post.author} in invalid')
             return False
 
 
